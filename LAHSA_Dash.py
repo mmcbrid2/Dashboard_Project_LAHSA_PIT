@@ -9,7 +9,7 @@ import geopandas as gpd
 
 # Define paths to data files
 data_path = '2024-housing-inventory-count cleaned.csv'
-spa_boundaries_path = 'Service_Planning_Areas_2022_view_4712258077157513619.geojson'
+spa_boundaries_path = 'simplified_SPA.geojson'
 
 # Read in the cleaned housing inventory data
 df = pd.read_csv(data_path)
