@@ -248,7 +248,10 @@ def update_visuals(selected_values):
 
 # Run the server after configuration is complete
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8051)  # Optionally, the port number can be changed
+    import os
+    port = int(os.environ.get('PORT', 8050))  # Get the port from environment variable or default to 8050
+    app.run_server(debug=True, host='0.0.0.0', port=port)  # Bind to 0.0.0.0 to be accessible externally
+
 
 
 
