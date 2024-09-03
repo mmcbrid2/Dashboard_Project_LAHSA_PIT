@@ -9,13 +9,13 @@ import geopandas as gpd
 
 # Define paths to data files
 data_path = '2024-housing-inventory-count cleaned.csv'
-spa_boundaries_path = 'Service_Planning_Areas_2022_view_4712258077157513619.geojson'
+spa_boundaries_path = 'simplified_SPA.geojson'
 
 # Read in the cleaned housing inventory data
 df = pd.read_csv(data_path)
 
 # Load Service Planning Area (SPA) boundaries using GeoPandas for spatial analysis
-#spa_geo = gpd.read_file(spa_boundaries_path)
+spa_geo = gpd.read_file(spa_boundaries_path)
 
 # Ensure SPA identifiers are consistent across dataframes
 df['SPA'] = df['SPA'].astype(str)
@@ -92,7 +92,7 @@ app.layout = dbc.Container([
             ]),
             # First row of visualizations: Map and Bar chart of Utilization Rate by SPA
             dbc.Row([
-                #dbc.Col(dcc.Graph(id='map-graph'), width=6),  # Map visualization
+                dbc.Col(dcc.Graph(id='map-graph'), width=6),  # Map visualization
                 dbc.Col(dcc.Graph(id='bar-graph', config={'displayModeBar': False}), width=12)  # Bar chart
             ]),
             # Second row of visualizations: Utilization by Housing Type and Bed Count
@@ -122,30 +122,30 @@ def update_visuals(selected_values):
     filtered_df = df[df['SPA'].isin(selected_values)] if selected_values else df
 
     # Map visualization: display SPA boundaries and their average utilization rates
-    #grouped = df.groupby('SPA').agg({'Utilization Rate': 'mean'}).reset_index()
-    #merged = spa_geo.merge(grouped, left_on='SPA', right_on='SPA', how='left')
-    #filtered_geo = merged[merged['SPA'].isin(selected_values)] if selected_values else merged
+    grouped = df.groupby('SPA').agg({'Utilization Rate': 'mean'}).reset_index()
+    merged = spa_geo.merge(grouped, left_on='SPA', right_on='SPA', how='left')
+    filtered_geo = merged[merged['SPA'].isin(selected_values)] if selected_values else merged
 
-    #map_fig = px.choropleth_mapbox(
-        #filtered_geo,
-        #geojson=filtered_geo.geometry,
-        #locations=filtered_geo.index,
-        #color='SPA',
-        #hover_name='SPA',
-        #hover_data={'Utilization Rate': True},
-        #mapbox_style="carto-positron",  # Use a light map style for better contrast
-        #center={"lat": 34.0522, "lon": -118.2437},
-        #zoom=7.35,
-        #opacity=0.75,
-        #color_discrete_map=color_mapping  # Apply SPA color mapping
-    #)
-    #map_fig.update_layout(showlegend=False,  # Remove legend for clarity
-                          #margin={"r":5,"t":5,"l":5,"b":5},  # Adjust margins to fit content
-                          #paper_bgcolor='rgba(169,169,169,1)',  # Match background to theme
-                          #plot_bgcolor='rgba(169,169,169,1)',
-                          #modebar_remove=['pan2d', 'select2d', 'lasso2d', 'zoomInGeo', 'zoomOutGeo', 'hoverClosestGeo', 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover', 'toImage'],
-                          #modebar_add=['zoomIn2d', 'zoomOut2d', 'resetScale2d']  # Customize toolbar options
-                         #)  
+    map_fig = px.choropleth_mapbox(
+        filtered_geo,
+        geojson=filtered_geo.geometry,
+        locations=filtered_geo.index,
+        color='SPA',
+        hover_name='SPA',
+        hover_data={'Utilization Rate': True},
+        mapbox_style="carto-positron",  # Use a light map style for better contrast
+        center={"lat": 34.0522, "lon": -118.2437},
+        zoom=7.35,
+        opacity=0.75,
+        color_discrete_map=color_mapping  # Apply SPA color mapping
+    )
+    map_fig.update_layout(showlegend=False,  # Remove legend for clarity
+                          margin={"r":5,"t":5,"l":5,"b":5},  # Adjust margins to fit content
+                          paper_bgcolor='rgba(169,169,169,1)',  # Match background to theme
+                          plot_bgcolor='rgba(169,169,169,1)',
+                          modebar_remove=['pan2d', 'select2d', 'lasso2d', 'zoomInGeo', 'zoomOutGeo', 'hoverClosestGeo', 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover', 'toImage'],
+                          modebar_add=['zoomIn2d', 'zoomOut2d', 'resetScale2d']  # Customize toolbar options
+                         )  
 
     # Bar chart visualization: display average bed utilization rate by SPA
     bar_fig = px.bar(
@@ -244,7 +244,7 @@ def update_visuals(selected_values):
         legend_title_text=''  # Remove the 'Bed Status' label for a cleaner look
     )
 
-    return bar_fig, housing_type_bar_fig, bed_count_bar_fig, selected_values  # Return updated dropdown value, map_fig, 
+    return map_fig, bar_fig, housing_type_bar_fig, bed_count_bar_fig, selected_values  # Return updated dropdown value, map_fig, 
 
 # Run the server after configuration is complete
 if __name__ == '__main__':
