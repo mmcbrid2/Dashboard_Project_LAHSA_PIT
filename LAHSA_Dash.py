@@ -93,7 +93,7 @@ app.layout = dbc.Container([
             # First row of visualizations: Map and Bar chart of Utilization Rate by SPA
             dbc.Row([
                 dbc.Col(dcc.Graph(id='map-graph'), width=6),  # Map visualization
-                dbc.Col(dcc.Graph(id='bar-graph', config={'displayModeBar': False}), width=12)  # Bar chart
+                dbc.Col(dcc.Graph(id='bar-graph', config={'displayModeBar': False}), width=6)  # Bar chart
             ]),
             # Second row of visualizations: Utilization by Housing Type and Bed Count
             dbc.Row([
