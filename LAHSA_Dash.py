@@ -19,7 +19,7 @@ spa_geo = gpd.read_file(spa_boundaries_path)
 
 # Ensure SPA identifiers are consistent across dataframes
 df['SPA'] = df['SPA'].astype(str)
-#spa_geo['SPA'] = spa_geo['SPA'].astype(str)
+spa_geo['SPA'] = spa_geo['SPA'].astype(str)
 
 # Map SPA numeric identifiers to meaningful names for readability and analysis
 spa_dict = {
@@ -35,7 +35,7 @@ spa_dict = {
 
 # Apply SPA name mapping to both datasets
 df['SPA'] = df['SPA'].map(spa_dict)
-#spa_geo['SPA'] = spa_geo['SPA'].map(spa_dict)
+spa_geo['SPA'] = spa_geo['SPA'].map(spa_dict)
 
 # Define a consistent color mapping for visual consistency across charts
 color_mapping = {
