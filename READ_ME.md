@@ -1,5 +1,8 @@
 2024 Point-In-Time (PIT) Bed Utilization Rate Analysis Dashboard
 
+The Final Product (dashboard) can be viewed here: https://dashboard-project-lahsa-pit-1.onrender.com
+
+
 Overview
 
 This project presents an interactive dashboard built using Dash and Plotly to analyze and visualize the 2024 Point-In-Time (PIT) Bed Utilization Rate for the Los Angeles Homeless Services Authority (LAHSA). The dashboard provides stakeholders with insights into bed utilization across various Service Planning Areas (SPAs) in Los Angeles, offering visualizations of average utilization rates by SPA, housing type, and bed status (utilized vs. empty beds).
